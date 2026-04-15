@@ -124,9 +124,9 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-semibold mb-1">Office Address</h3>
                       <p className="text-muted-foreground">
-                        Building 15, Smart Village<br />
-                        6th of October, Giza<br />
-                        Egypt
+                        Salah El-Din Street<br />
+                        Al-Mokattam, Cairo<br />
+                        Egypt,
                       </p>
                     </div>
                   </div>
