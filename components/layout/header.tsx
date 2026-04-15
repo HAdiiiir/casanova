@@ -6,15 +6,8 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import { Menu, X, Building2, MapPin, Users, Phone, Home, Layers, FolderKanban } from "lucide-react";
+import { Menu, Building2, MapPin, Users, Phone, Home, Layers, FolderKanban } from "lucide-react";
+import { CasanovaLogo } from "@/components/ui/casanova-logo";
 
 const navigation = [
   { name: "Home", href: "/", icon: Home },
@@ -33,15 +26,8 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-            <Layers className="h-6 w-6 text-primary-foreground" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg font-bold tracking-tight text-foreground">CasaNova</span>
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Real Estate</span>
-          </div>
-        </Link>
+        <CasanovaLogo size="sm" animated={false} />
+
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex lg:items-center lg:gap-1">
@@ -85,15 +71,7 @@ export function Header() {
           </SheetTrigger>
           <SheetContent side="right" className="w-[300px] sm:w-[400px]">
             <div className="flex flex-col gap-6 py-6">
-              <div className="flex items-center gap-2">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-                  <Layers className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-lg font-bold tracking-tight">Al Amal</span>
-                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Real Estate</span>
-                </div>
-              </div>
+                <CasanovaLogo size="sm" animated={false} href={undefined} />
               <nav className="flex flex-col gap-1">
                 {navigation.map((item) => {
                   const Icon = item.icon;

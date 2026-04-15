@@ -4,7 +4,7 @@ import type { Project, Unit, Zone, Developer, DeveloperProgress, User } from './
 export const users: User[] = [
   {
     id: '1',
-    email: 'admin@alamalrealestate.com',
+    email: 'admin@casanovarealestate.com',
     name: 'Ahmed Hassan',
     phone: '+20 100 123 4567',
     role: 'admin',
@@ -12,7 +12,7 @@ export const users: User[] = [
   },
   {
     id: '2',
-    email: 'agent@alamalrealestate.com',
+    email: 'agent@casanovarealestate.com',
     name: 'Sara Mohamed',
     phone: '+20 101 234 5678',
     role: 'agent',
@@ -76,7 +76,7 @@ export const zones: Zone[] = [
 export const developers: Developer[] = [
   {
     id: 'dev-1',
-    name: 'Al Amal Development',
+    name: 'CasaNova Development',
     nameAr: 'الأمل للتطوير العقاري',
     description: 'Leading real estate developer with over 25 years of experience in creating exceptional living spaces. Known for innovative designs and timely delivery.',
     descriptionAr: 'شركة رائدة في التطوير العقاري بخبرة تتجاوز 25 عاماً في إنشاء مساحات معيشية استثنائية.',
@@ -119,7 +119,7 @@ export const developers: Developer[] = [
 export const projects: Project[] = [
   {
     id: 'proj-1',
-    name: 'Al Amal Gardens',
+    name: 'CasaNova Gardens',
     nameAr: 'حدائق الأمل',
     description: 'A luxurious residential compound featuring spacious villas and apartments surrounded by lush green landscapes. Experience the perfect blend of modern architecture and natural beauty with premium amenities including a clubhouse, swimming pools, and sports facilities.',
     descriptionAr: 'مجمع سكني فاخر يضم فيلات وشقق واسعة محاطة بمناظر طبيعية خضراء خلابة.',

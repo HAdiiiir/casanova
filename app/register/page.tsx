@@ -1,228 +1,378 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Layers, Mail, Lock, Eye, EyeOff, User, Phone } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { CasanovaLogo } from "@/components/ui/casanova-logo";
+import { Eye, EyeOff, ArrowRight, Loader2, Check } from "lucide-react";
 import { toast } from "sonner";
 
+// Google Icon
+const GoogleIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24">
+    <path
+      fill="#4285F4"
+      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+    />
+    <path
+      fill="#34A853"
+      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+    />
+    <path
+      fill="#FBBC05"
+      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+    />
+    <path
+      fill="#EA4335"
+      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+    />
+  </svg>
+);
+
+// Facebook Icon
+const FacebookIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="#1877F2">
+    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+  </svg>
+);
+
 export default function RegisterPage() {
+  const router = useRouter();
+  const [showCurtain, setShowCurtain] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const passwordRequirements = [
+    { label: "At least 8 characters", met: formData.password.length >= 8 },
+    { label: "Contains uppercase letter", met: /[A-Z]/.test(formData.password) },
+    { label: "Contains number", met: /[0-9]/.test(formData.password) },
+  ];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowCurtain(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // Simulate API call
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    
+    if (!agreeTerms) {
+      toast.error("Please agree to the terms and conditions");
+      return;
+    }
+    
+    setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    setIsLoading(false);
-    toast.success("Account created successfully!");
-    router.push("/login");
+    toast.success("Account created successfully! Redirecting...");
+    setTimeout(() => router.push("/login"), 1000);
+  };
+
+  const handleGoogleSignup = () => {
+    toast.info("Redirecting to Google...");
+    window.open("https://accounts.google.com", "_blank");
+  };
+
+  const handleFacebookSignup = () => {
+    toast.info("Redirecting to Facebook...");
+    window.open("https://www.facebook.com/login", "_blank");
   };
 
   return (
-    <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4 py-8">
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="flex justify-center mb-8">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
-              <Layers className="h-7 w-7 text-primary-foreground" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight">Al Amal</span>
-              <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Real Estate</span>
-            </div>
-          </Link>
-        </div>
+    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-primary/20 via-background to-primary/10">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM4QjVBMkIiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
 
-        <Card className="shadow-xl">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-serif">Create Account</CardTitle>
-            <CardDescription>Sign up to explore our exclusive properties</CardDescription>
-          </CardHeader>
-          <CardContent>
+      {/* Curtain Animation */}
+      <AnimatePresence>
+        {showCurtain && (
+          <>
+            <motion.div
+              initial={{ y: 0 }}
+              animate={{ y: 0 }}
+              exit={{ y: "-100%" }}
+              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+              className="fixed inset-x-0 top-0 h-1/2 bg-primary z-50 flex items-end justify-center pb-4"
+            >
+              <motion.div
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <CasanovaLogo size="lg" variant="light" animated={false} href={undefined} />
+              </motion.div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ y: 0 }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+              className="fixed inset-x-0 bottom-0 h-1/2 bg-primary z-50"
+            />
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Main Content */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showCurtain ? 0 : 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="relative flex min-h-screen items-center justify-center px-4 py-12"
+      >
+        <div className="w-full max-w-lg">
+          {/* Logo */}
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="mb-6 flex justify-center"
+          >
+            <CasanovaLogo size="lg" />
+          </motion.div>
+
+          {/* Register Card */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="rounded-2xl bg-card p-8 shadow-2xl shadow-primary/10 border border-border/50"
+          >
+            <div className="mb-6 text-center">
+              <h1 className="text-2xl font-bold font-serif text-foreground">Create Account</h1>
+              <p className="mt-2 text-muted-foreground">Join Casanova Real Estate today</p>
+            </div>
+
+            {/* Social Signup Buttons */}
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <Button
+                type="button"
+                variant="outline"
+                className="h-12"
+                onClick={handleGoogleSignup}
+              >
+                <GoogleIcon className="mr-2 h-5 w-5" />
+                Google
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="h-12"
+                onClick={handleFacebookSignup}
+              >
+                <FacebookIcon className="mr-2 h-5 w-5" />
+                Facebook
+              </Button>
+            </div>
+
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-border" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">Or register with email</span>
+              </div>
+            </div>
+
+            {/* Register Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input 
-                      id="firstName"
-                      type="text" 
-                      placeholder="John" 
-                      className="pl-10"
-                      required 
-                    />
-                  </div>
+                  <Input
+                    id="firstName"
+                    placeholder="John"
+                    value={formData.firstName}
+                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                    required
+                    className="h-11"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input 
+                  <Input
                     id="lastName"
-                    type="text" 
-                    placeholder="Doe" 
-                    required 
+                    placeholder="Doe"
+                    value={formData.lastName}
+                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    required
+                    className="h-11"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input 
-                    id="email"
-                    type="email" 
-                    placeholder="john@example.com" 
-                    className="pl-10"
-                    required 
-                  />
-                </div>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="h-11"
+                />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input 
-                    id="phone"
-                    type="tel" 
-                    placeholder="+20 100 000 0000" 
-                    className="pl-10"
-                    required 
-                  />
-                </div>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="+20 100 123 4567"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  required
+                  className="h-11"
+                />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input 
+                  <Input
                     id="password"
-                    type={showPassword ? "text" : "password"} 
-                    placeholder="Create a password" 
-                    className="pl-10 pr-10"
-                    required 
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Create a strong password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    required
+                    className="h-11 pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
-                <p className="text-xs text-muted-foreground">Must be at least 8 characters</p>
+                {/* Password Requirements */}
+                {formData.password && (
+                  <div className="mt-2 space-y-1">
+                    {passwordRequirements.map((req, index) => (
+                      <div key={index} className="flex items-center gap-2 text-xs">
+                        <Check className={`h-3 w-3 ${req.met ? "text-green-500" : "text-muted-foreground"}`} />
+                        <span className={req.met ? "text-green-500" : "text-muted-foreground"}>
+                          {req.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input 
+                  <Input
                     id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"} 
-                    placeholder="Confirm your password" 
-                    className="pl-10 pr-10"
-                    required 
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm your password"
+                    value={formData.confirmPassword}
+                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    required
+                    className="h-11 pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
-                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-start space-x-2">
-                <Checkbox id="terms" required />
-                <Label htmlFor="terms" className="text-sm font-normal leading-tight">
+              {/* Terms Checkbox */}
+              <div className="flex items-start gap-2">
+                <Checkbox
+                  id="terms"
+                  checked={agreeTerms}
+                  onCheckedChange={(checked) => setAgreeTerms(checked as boolean)}
+                  className="mt-1"
+                />
+                <Label htmlFor="terms" className="text-sm text-muted-foreground leading-relaxed">
                   I agree to the{" "}
                   <Link href="/terms" className="text-primary hover:underline">
                     Terms of Service
-                  </Link>
-                  {" "}and{" "}
+                  </Link>{" "}
+                  and{" "}
                   <Link href="/privacy" className="text-primary hover:underline">
                     Privacy Policy
                   </Link>
                 </Label>
               </div>
 
-              <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="w-full h-12 text-base font-medium"
+                disabled={isLoading}
+              >
                 {isLoading ? (
-                  <>
-                    <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
-                    Creating account...
-                  </>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 ) : (
-                  "Create Account"
+                  <>
+                    Create Account
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </>
                 )}
               </Button>
             </form>
 
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Or sign up with</span>
-              </div>
-            </div>
+            {/* Login Link */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="mt-6 text-center"
+            >
+              <p className="text-muted-foreground">
+                Already have an account?{" "}
+                <Link href="/login" className="font-medium text-primary hover:underline">
+                  Sign In
+                </Link>
+              </p>
+            </motion.div>
+          </motion.div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" type="button">
-                <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
-                  <path
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                    fill="#4285F4"
-                  />
-                  <path
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                    fill="#34A853"
-                  />
-                  <path
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                    fill="#FBBC05"
-                  />
-                  <path
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                    fill="#EA4335"
-                  />
-                </svg>
-                Google
-              </Button>
-              <Button variant="outline" type="button">
-                <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-                Facebook
-              </Button>
-            </div>
-          </CardContent>
-          <CardFooter className="justify-center">
-            <p className="text-sm text-muted-foreground">
-              Already have an account?{" "}
-              <Link href="/login" className="text-primary hover:underline font-medium">
-                Sign in
-              </Link>
-            </p>
-          </CardFooter>
-        </Card>
-      </div>
+          {/* Back to Home */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9 }}
+            className="mt-6 text-center"
+          >
+            <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Back to Home
+            </Link>
+          </motion.div>
+        </div>
+      </motion.div>
     </div>
   );
 }

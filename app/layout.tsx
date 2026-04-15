@@ -19,10 +19,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Al Amal Real Estate | Luxury Properties in Egypt',
-  description: 'Discover premium villas, apartments, and compounds across Egypt. Al Amal Real Estate - Your trusted partner for luxury living.',
-  keywords: 'real estate, egypt, cairo, new cairo, villas, apartments, compounds, luxury properties',
-  authors: [{ name: 'Al Amal Real Estate' }],
+  title: 'CasaNova Real Estate | Luxury Properties in Egypt',
+  description: 'Discover premium villas, apartments, and compounds across Egypt. CasaNova Real Estate - Your trusted partner for luxury living.',
+  keywords: 'real estate, egypt, cairo, new cairo, villas, apartments, compounds, luxury properties, casanova',
+  authors: [{ name: 'CasaNova Real Estate' }],
   icons: {
     icon: [
       {
