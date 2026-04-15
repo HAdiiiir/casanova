@@ -97,7 +97,7 @@ export function Footer() {
                 <Layers className="h-6 w-6 text-primary-foreground" />
               </div>
               <div className="flex flex-col">
-                <span className="text-lg font-bold tracking-tight">Al Amal</span>
+                <span className="text-lg font-bold tracking-tight">CasaNova</span>
                 <span className="text-[10px] uppercase tracking-widest text-background/60">Real Estate</span>
               </div>
             </Link>
@@ -109,7 +109,7 @@ export function Footer() {
                 <Phone className="h-4 w-4" />
                 +20 100 123 4567
               </a>
-              <a href="mailto:info@alamalrealestate.com" className="flex items-center gap-2 text-sm text-background/70 hover:text-background transition-colors">
+              <a href="mailto:info@casanovarealestate.com" className="flex items-center gap-2 text-sm text-background/70 hover:text-background transition-colors">
                 <Mail className="h-4 w-4" />
                 info@casanovarealestate.com
               </a>
