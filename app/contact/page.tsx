@@ -161,7 +161,7 @@ export default function ContactPage() {
                       <p className="text-primary-foreground/80 text-sm mb-3">
                         Chat with us directly for quick responses
                       </p>
-                      <a href="https://wa.me/201001234567">
+                      <a href="https://wa.me/201200558476">
                         <Button variant="secondary" size="sm">
                           Start Chat
                         </Button>
