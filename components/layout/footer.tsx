@@ -178,9 +178,16 @@ export function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-background/10">
         <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-6 lg:flex-row lg:px-8">
-          <p className="text-sm text-background/60">
-            &copy; {new Date().getFullYear()} CasaNova Real Estate. All rights reserved.
-          </p>
+          <div className="text-sm text-background/60">
+            <p>{new Date().getFullYear()} Casanova Real Estate. All rights reserved.</p>
+            <p className="mt-1">
+              Developed by{" "}
+              <Link href="/about#developer" className="text-primary hover:underline font-medium">
+                Hadeer Gamal El-Din
+              </Link>
+              {" "}- Full Stack Developer
+            </p>
+          </div>
           <div className="flex gap-4">
             {socialLinks.map((social) => {
               const Icon = social.icon;
