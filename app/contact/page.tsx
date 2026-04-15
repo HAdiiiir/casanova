@@ -103,11 +103,11 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Email</h3>
-                      <a href="mailto:info@alamalrealestate.com" className="text-muted-foreground hover:text-primary transition-colors">
-                        info@alamalrealestate.com
+                      <a href="mailto:info@casanovarealestate.com" className="text-muted-foreground hover:text-primary transition-colors">
+                        info@casanovarealestate.com
                       </a>
                       <br />
-                      <a href="mailto:sales@alamalrealestate.com" className="text-muted-foreground hover:text-primary transition-colors">
+                      <a href="mailto:sales@casanovarealestate.com" className="text-muted-foreground hover:text-primary transition-colors">
                         sales@cnrealestate.com
                       </a>
                     </div>
