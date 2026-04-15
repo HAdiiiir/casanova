@@ -89,29 +89,49 @@ export function Footer() {
 
   return (
     <footer className="bg-foreground text-background">
-      {/* Newsletter Section */}
-      <div className="border-b border-background/10">
-        <div className="container mx-auto px-4 py-12 lg:px-8">
-          <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
-            <div className="text-center lg:text-left">
-              <h3 className="text-2xl font-bold font-serif">Stay Updated</h3>
-              <p className="mt-1 text-background/70">Subscribe to receive the latest property listings, exclusive offers, and real estate news</p>
-            </div>
-            <form onSubmit={handleSubscribe} className="flex w-full max-w-md gap-2">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-background/10 border-background/20 text-background placeholder:text-background/50"
-              />
-              <Button type="submit" className="bg-primary hover:bg-primary/90" disabled={isSubscribing}>
-                {isSubscribing ? "Subscribing..." : "Subscribe"}
-              </Button>
-            </form>
-          </div>
+     {/* Newsletter Section */}
+<div className="relative border-b border-background/10">
+  <div className="container mx-auto px-4 py-16 lg:px-8">
+    <div className="max-w-4xl mx-auto text-center">
+
+      {/* Title */}
+      <h3 className="text-3xl font-bold font-serif mb-3">
+        Stay Updated
+      </h3>
+      <p className="text-background/70 mb-8">
+        Subscribe to receive the latest property listings, exclusive offers, and real estate news
+      </p>
+
+      {/* Creative Input */}
+      <form 
+        onSubmit={handleSubscribe} 
+        className="relative max-w-xl mx-auto"
+      >
+        <div className="flex items-center bg-background/10 backdrop-blur-md border border-background/20 rounded-full p-2 shadow-lg">
+
+          {/* Email Input */}
+          <input
+            type="email"
+            placeholder="Enter your email..."
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="flex-1 bg-transparent outline-none px-4 py-2 text-background placeholder:text-background/50"
+          />
+
+          {/* Button */}
+          <button
+            type="submit"
+            disabled={isSubscribing}
+            className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-full font-medium transition-all duration-300 hover:scale-105"
+          >
+            {isSubscribing ? "..." : "Subscribe"}
+          </button>
         </div>
-      </div>
+      </form>
+
+    </div>
+  </div>
+</div>
 
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12 lg:px-8">
