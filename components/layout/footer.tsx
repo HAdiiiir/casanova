@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
-import { Layers, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CasanovaLogo } from "@/components/ui/casanova-logo";
+import { useState } from "react";
+import { toast } from "sonner";
 
-// Custom SVG icons for social media (lucide-react removed brand icons)
+// Custom SVG icons for social media
 const FacebookIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -49,9 +54,9 @@ const footerLinks = {
   ],
   support: [
     { name: "Contact Us", href: "/contact" },
+    { name: "Support Center", href: "/support" },
+    { name: "Location", href: "/location" },
     { name: "FAQs", href: "/faqs" },
-    { name: "Privacy Policy", href: "/privacy" },
-    { name: "Terms of Service", href: "/terms" },
   ],
 };
 
@@ -63,6 +68,25 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const [email, setEmail] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+    
+    setIsSubscribing(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    toast.success("Successfully subscribed! You will receive our latest updates and exclusive offers.");
+    setEmail("");
+    setIsSubscribing(false);
+  };
+
   return (
     <footer className="bg-foreground text-background">
       {/* Newsletter Section */}
@@ -70,19 +94,21 @@ export function Footer() {
         <div className="container mx-auto px-4 py-12 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
             <div className="text-center lg:text-left">
-              <h3 className="text-2xl font-bold">Stay Updated</h3>
-              <p className="mt-1 text-background/70">Subscribe to receive the latest property listings and news</p>
+              <h3 className="text-2xl font-bold font-serif">Stay Updated</h3>
+              <p className="mt-1 text-background/70">Subscribe to receive the latest property listings, exclusive offers, and real estate news</p>
             </div>
-            <div className="flex w-full max-w-md gap-2">
+            <form onSubmit={handleSubscribe} className="flex w-full max-w-md gap-2">
               <Input
                 type="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="bg-background/10 border-background/20 text-background placeholder:text-background/50"
               />
-              <Button className="bg-primary hover:bg-primary/90">
-                Subscribe
+              <Button type="submit" className="bg-primary hover:bg-primary/90" disabled={isSubscribing}>
+                {isSubscribing ? "Subscribing..." : "Subscribe"}
               </Button>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -92,15 +118,7 @@ export function Footer() {
         <div className="grid gap-8 lg:grid-cols-6">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-                <Layers className="h-6 w-6 text-primary-foreground" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-bold tracking-tight">CasaNova</span>
-                <span className="text-[10px] uppercase tracking-widest text-background/60">Real Estate</span>
-              </div>
-            </Link>
+            <CasanovaLogo size="md" variant="light" animated={false} href={undefined} />
             <p className="mt-4 max-w-sm text-sm text-background/70">
               Your trusted partner in finding the perfect home. Over 25 years of experience in delivering exceptional real estate solutions across Egypt.
             </p>
@@ -115,7 +133,7 @@ export function Footer() {
               </a>
               <p className="flex items-center gap-2 text-sm text-background/70">
                 <MapPin className="h-4 w-4 shrink-0" />
-                Building 15, Smart Village, 6th October, Giza, Egypt
+                Salah El-Din Street, Al-Mokattam, Cairo, Egypt,
               </p>
             </div>
           </div>

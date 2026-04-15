@@ -44,20 +44,20 @@ export function CTASection() {
               <Phone className="h-8 w-8 text-primary-foreground mb-3" />
               <p className="font-medium text-primary-foreground">Call Us</p>
               <a href="tel:+201001234567" className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                +20 100 123 4567
+                +20 1200558476
               </a>
             </div>
             <div className="flex flex-col items-center p-4 rounded-xl bg-primary-foreground/10 backdrop-blur-sm">
               <Mail className="h-8 w-8 text-primary-foreground mb-3" />
               <p className="font-medium text-primary-foreground">Email Us</p>
               <a href="mailto:info@alamalrealestate.com" className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                info@alamalrealestate.com
+                info@casanovarealestate.com
               </a>
             </div>
             <div className="flex flex-col items-center p-4 rounded-xl bg-primary-foreground/10 backdrop-blur-sm">
               <MessageCircle className="h-8 w-8 text-primary-foreground mb-3" />
               <p className="font-medium text-primary-foreground">WhatsApp</p>
-              <a href="https://wa.me/201001234567" className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+              <a href="https://wa.me/201200558476" className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 Send Message
               </a>
             </div>
